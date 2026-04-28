@@ -1,0 +1,11 @@
+datasets
+pandas
+numpy
+python-dotenv
+sentence-transformers
+faiss-cpu
+tqdm
+scikit-learn
+streamlit
+openai
+google-generativeai

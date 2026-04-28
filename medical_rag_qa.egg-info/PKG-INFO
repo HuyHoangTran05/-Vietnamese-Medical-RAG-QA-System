@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: medical-rag-qa
+Version: 0.1.0
+Summary: Vietnamese Medical RAG QA System
+Requires-Python: >=3.10
