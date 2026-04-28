@@ -49,3 +49,8 @@ Thumbs.db
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Python packaging
+*.egg-info/
+build/
+dist/
