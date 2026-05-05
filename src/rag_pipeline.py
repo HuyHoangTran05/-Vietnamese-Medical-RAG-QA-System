@@ -41,7 +41,7 @@ class MedicalRAGPipeline:
                 content = doc.get("raw_text") or doc.get("text") or ""
 
             context = f"""
-[Tài liệu {i}]
+[Nguồn {i}]
 Điểm tương đồng: {score:.4f}
 Nguồn: {source}
 Loại nguồn: {source_type}

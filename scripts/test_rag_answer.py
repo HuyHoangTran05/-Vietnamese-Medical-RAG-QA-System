@@ -7,7 +7,7 @@ def print_sources(retrieved_docs):
     print("=" * 100)
 
     for i, doc in enumerate(retrieved_docs, start=1):
-        print(f"\nNguồn {i}")
+        print(f"\n[Nguồn {i}]")
         print(f"Score: {doc.get('score', 0):.4f}")
         print(f"Chunk ID: {doc.get('chunk_id')}")
         print(f"Source: {doc.get('source')}")
