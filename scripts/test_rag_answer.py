@@ -10,12 +10,26 @@ def print_sources(retrieved_docs):
         print(f"\nNguồn {i}")
         print(f"Score: {doc.get('score', 0):.4f}")
         print(f"Chunk ID: {doc.get('chunk_id')}")
+        print(f"Source: {doc.get('source')}")
+        print(f"Source type: {doc.get('source_type')}")
+        print(f"Title: {doc.get('title')}")
+        print(f"URL: {doc.get('url')}")
+        print(f"File path: {doc.get('file_path')}")
         print("-" * 100)
-        print("Câu hỏi liên quan:")
-        print(doc.get("question", ""))
-        print()
-        print("Câu trả lời liên quan:")
-        print(doc.get("answer", ""))
+
+        question = doc.get("question", "")
+        answer = doc.get("answer", "")
+
+        if question or answer:
+            print("Câu hỏi liên quan:")
+            print(question)
+            print()
+            print("Câu trả lời liên quan:")
+            print(answer)
+        else:
+            print("Nội dung liên quan:")
+            content = doc.get("raw_text") or doc.get("text") or ""
+            print(content[:1200])
 
 
 def main():

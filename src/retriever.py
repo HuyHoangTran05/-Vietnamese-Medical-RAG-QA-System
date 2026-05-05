@@ -33,7 +33,7 @@ class MedicalRetriever:
         print(f"Loading embedding model: {self.model_name}")
         self.model = SentenceTransformer(self.model_name)
 
-    def search(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
+    def search(self, query: str, top_k: int = 5, min_score: float = 0.72) -> List[Dict[str, Any]]:
         query_embedding = self.model.encode(
             [query],
             convert_to_numpy=True,
@@ -48,19 +48,27 @@ class MedicalRetriever:
             if idx == -1:
                 continue
 
+            if float(score) < min_score:
+                continue
+
             item = self.metadata[idx]
 
             results.append(
-                {
-                    "score": float(score),
-                    "chunk_id": item.get("chunk_id"),
-                    "doc_id": item.get("doc_id"),
-                    "title": item.get("title"),
-                    "question": item.get("question"),
-                    "answer": item.get("answer"),
-                    "text": item.get("text"),
-                    "source": item.get("source"),
-                }
-            )
+    {
+        "score": float(score),
+        "chunk_id": item.get("chunk_id"),
+        "doc_id": item.get("doc_id"),
+        "title": item.get("title"),
+        "question": item.get("question"),
+        "answer": item.get("answer"),
+        "text": item.get("text"),
+        "raw_text": item.get("raw_text"),
+        "source": item.get("source"),
+        "source_type": item.get("source_type"),
+        "trust_level": item.get("trust_level"),
+        "url": item.get("url"),
+        "file_path": item.get("file_path"),
+    }
+)
 
         return results

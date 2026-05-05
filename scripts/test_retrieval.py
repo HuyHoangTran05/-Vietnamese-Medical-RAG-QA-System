@@ -35,7 +35,7 @@ def load_retriever():
     return model, index, metadata
 
 
-def search(query: str, model, index, metadata, top_k: int = 5):
+def search(query: str, model, index, metadata, top_k: int = 5, min_score: float = 0.72):
     query_embedding = model.encode(
         [query],
         convert_to_numpy=True,
@@ -49,6 +49,8 @@ def search(query: str, model, index, metadata, top_k: int = 5):
     results = []
 
     for score, idx in zip(scores[0], indices[0]):
+        if float(score) < min_score:
+            continue
         if idx == -1:
             continue
 
@@ -63,6 +65,11 @@ def search(query: str, model, index, metadata, top_k: int = 5):
                 "question": item.get("question"),
                 "answer": item.get("answer"),
                 "text": item.get("text"),
+                 "source": item.get("source"),
+                "source_type": item.get("source_type"),
+                "trust_level": item.get("trust_level"),
+                "url": item.get("url"),
+                "file_path": item.get("file_path"),
             }
         )
 
@@ -74,22 +81,33 @@ def print_results(query: str, results):
     print(f"Query: {query}")
     print("=" * 100)
 
+    if not results:
+        print("Không tìm thấy kết quả liên quan.")
+        return
+
     for i, result in enumerate(results, start=1):
         print(f"\nTOP {i}")
-        print(f"Score: {result['score']:.4f}")
-        print(f"Chunk ID: {result['chunk_id']}")
-        print(f"Doc ID: {result['doc_id']}")
+        print(f"Score: {result.get('score', 0):.4f}")
+        print(f"Chunk ID: {result.get('chunk_id')}")
+        print(f"Doc ID: {result.get('doc_id')}")
+        print(f"Title: {result.get('title')}")
+        print(f"Source: {result.get('source')}")
+        print(f"Source type: {result.get('source_type')}")
+        print(f"Trust level: {result.get('trust_level')}")
+        print(f"URL: {result.get('url')}")
+        print(f"File path: {result.get('file_path')}")
         print("-" * 100)
 
         if result.get("question"):
             print("Câu hỏi trong corpus:")
-            print(result["question"])
+            print(result.get("question", ""))
             print()
 
         if result.get("answer"):
             print("Câu trả lời trong corpus:")
-            print(result["answer"])
+            print(result.get("answer", ""))
         else:
+            print("Nội dung chunk:")
             print(result.get("text", ""))
 
 
